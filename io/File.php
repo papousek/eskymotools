@@ -93,11 +93,11 @@ class File extends \eskymo\Object
 	 * It creates new file descriptor.
 	 *
 	 * @param string $path The asbtract path to the file.
-	 * @throws \NullPointerException if the $path is empty.
+	 * @throws \InvalidArgumentException if the $path is empty.
 	 */
 	public function  __construct($path) {
 		if (empty($path)) {
-			throw new \NullPointerException("Argument 'path' is NULL.");
+			throw new \InvalidArgumentException("Argument 'path' is NULL.");
 		}
 		$this->path = rtrim($path, DIRECTORY_SEPARATOR);
 	}
@@ -106,17 +106,17 @@ class File extends \eskymo\Object
 	 * It checks if the file is executable.
 	 *
 	 * @return boolean
-	 * @throws \FileNotFoundException if the file does not exist.
-	 * @throws \IOException if there is an I/O problem.
+	 * @throws \Nette\FileNotFoundException if the file does not exist.
+	 * @throws \Nette\IOException if there is an I/O problem.
 	 */
 	public function canExecute() {
 		if (!$this->exists()) {
-			throw new \FileNotFoundException($this->getPath());
+			throw new \Nette\FileNotFoundException($this->getPath());
 		}
 		Tools::tryError();
 		$check = is_executable($this->getPath());
 		if  (Tools::catchError($msg)) {
-			throw new \IOException($msg, self::ERROR_GENERAL);
+			throw new \Nette\IOException($msg, self::ERROR_GENERAL);
 		}
 		return $check;
 	}
@@ -125,16 +125,16 @@ class File extends \eskymo\Object
 	 * It checks if the file is readable.
 	 *
 	 * @return boolean
-	 * @throws \FileNotFoundException if the file does not exist.
+	 * @throws \Nette\FileNotFoundException if the file does not exist.
 	 */
 	public function canRead() {
 		if (!$this->exists()) {
-			throw new \FileNotFoundException($this->getPath());
+			throw new \Nette\FileNotFoundException($this->getPath());
 		}
 		Tools::tryError();
 		$check = is_readable($this->getPath());
 		if  (Tools::catchError($msg)) {
-			throw new \IOException($msg, self::ERROR_GENERAL);
+			throw new \Nette\IOException($msg, self::ERROR_GENERAL);
 		}
 		return $check;
 	}
@@ -143,16 +143,16 @@ class File extends \eskymo\Object
 	 * It checks if the file is writable.
 	 *
 	 * @return boolean
-	 * @throws \FileNotFoundException if the file does not exist.
+	 * @throws \Nette\FileNotFoundException if the file does not exist.
 	 */
 	public function canWrite() {
 		if (!$this->exists()) {
-			throw new \FileNotFoundException($this->getPath());
+			throw new \Nette\FileNotFoundException($this->getPath());
 		}
 		Tools::tryError();
 		$check = is_writable($this->getPath());
 		if  (Tools::catchError($msg)) {
-			throw new \IOException($msg, self::ERROR_GENERAL);
+			throw new \Nette\IOException($msg, self::ERROR_GENERAL);
 		}
 		return $check;
 	}
@@ -161,24 +161,24 @@ class File extends \eskymo\Object
 	 * It copies a file
 	 *
 	 * @return File Copy of this file
-	 * @throws \FileNotFoundException if the file does not exist.
-	 * @throws \IOException if there is an I/O problem.
+	 * @throws \Nette\FileNotFoundException if the file does not exist.
+	 * @throws \Nette\IOException if there is an I/O problem.
 	 */
 	public function copy($destination) {
 		if (empty($destination)) {
-			throw new \NullPointerException("destination");
+			throw new \Nette\InvalidArgumentException("destination");
 		}
 		if (!$this->exists()) {
 			throw new \FileNotFoundException($this->path);
 		}
 		$destFile = new File($destination);
 		if (!$destFile->getParentFile()->canWrite()) {
-			throw new \IOException("The file cannot be copied.", self::ERROR_SECURITY);
+			throw new \Nette\IOException("The file cannot be copied.", self::ERROR_SECURITY);
 		}
 		Tools::tryError();
 		$check = copy($this->getAbsolutePath(), $destination);
 		if  (Tools::catchError($msg)) {
-			throw new \IOException($msg, self::ERROR_GENERAL);
+			throw new \Nette\IOException($msg, self::ERROR_GENERAL);
 		}
 		return $destFile;
 	}
@@ -189,42 +189,42 @@ class File extends \eskymo\Object
 	 *
 	 * @return boolean It returns TRUE, if the file does not exist
 	 *		and was successfully created, otherwise FALSE.
-	 * @throws \IOException if there is an I/O problem.
+	 * @throws \Nette\IOException if there is an I/O problem.
 	 */
 	public function createNewFile() {
 		if ($this->exists()) {
 			return FALSE;
 		}
 		if ($this->getParentFile() != NULL && !$this->getParentFile()->canWrite()) {
-			throw new \IOException("The file can not be created.", self::ERROR_SECURITY);
+			throw new \Nette\IOException("The file can not be created.", self::ERROR_SECURITY);
 		}
 		// Create a new file
 		Tools::tryError();
 		$file = fopen($this->getPath(), "w+");
 		if  (Tools::catchError($msg)) {
-			throw new \IOException($msg, self::ERROR_OPEN);
+			throw new \Nette\IOException($msg, self::ERROR_OPEN);
 		}
 		// Close the file
 		Tools::tryError();
 		fclose($file);
 		if  (Tools::catchError($msg)) {
-			throw new \IOException($msg, self::ERROR_OPEN);
+			throw new \Nette\IOException($msg, self::ERROR_OPEN);
 		}
 	}
 
 	/**
 	 * It deletes the file.
 	 *
-	 * @throws \FileNotFoundException if the file does not exist.
-	 * @throws \IOException if there is an I/O problem.
+	 * @throws \Nette\FileNotFoundException if the file does not exist.
+	 * @throws \Nette\IOException if there is an I/O problem.
 	 */
 	public function delete() {
 		if (!$this->exists()) {
-			throw new \FileNotFoundException($this->path);
+			throw new \Nette\FileNotFoundException($this->path);
 		}
 		$parent = $this->getParentFile();
 		if (!empty($parent) && !$parent->canWrite()) {
-			throw new \IOException("The file '".$this->getPath()."' cannot be deleted.", self::ERROR_SECURITY);
+			throw new \Nette\IOException("The file '".$this->getPath()."' cannot be deleted.", self::ERROR_SECURITY);
 		}
 		Tools::tryError();
 		if ($this->isDirectory()) {
@@ -234,7 +234,7 @@ class File extends \eskymo\Object
 			unlink($this->getPath());
 		}
 		if  (Tools::catchError($msg)) {
-			throw new \IOException($msg, self::ERROR_GENERAL);
+			throw new \Nette\IOException($msg, self::ERROR_GENERAL);
 		}
 	}
 
@@ -251,11 +251,11 @@ class File extends \eskymo\Object
 	 * It returns abosolute file system path to the file.
 	 *
 	 * @return string
-	 * @throws \FileNotFoundException if the file does not exist.
+	 * @throws \Nette\FileNotFoundException if the file does not exist.
 	 */
 	public function getAbsolutePath() {
 		if (!$this->exists()) {
-			throw new \FileNotFoundException($this->getPath());
+			throw new \Nette\FileNotFoundException($this->getPath());
 		}
 		return realpath($this->getPath());
 	}
@@ -276,20 +276,20 @@ class File extends \eskymo\Object
 	 * It returns time of last modifying (Unix timestamp)
 	 *
 	 * @return int
-	 * @throws \FileNotFoundException if the file does not exist.
-	 * @throws \IOException if there is an I/O problem.
+	 * @throws \Nette\FileNotFoundException if the file does not exist.
+	 * @throws \Nette\IOException if there is an I/O problem.
 	 */
 	public function getLastModified() {
 		if (!$this->exists()) {
-			throw new \FileNotFoundException($this->getPath());
+			throw new \Nette\FileNotFoundException($this->getPath());
 		}
 		Tools::tryError();
 		$time = filectime($this->getPath());
 		if (empty($time)) {
-			throw new \IOException("There is a problem to get time when the file was last modified.", self::ERROR_GENERAL);
+			throw new \Nette\IOException("There is a problem to get time when the file was last modified.", self::ERROR_GENERAL);
 		}
 		if  (Tools::catchError($msg)) {
-			throw new \IOException($msg, self::ERROR_GENERAL);
+			throw new \Nette\IOException($msg, self::ERROR_GENERAL);
 		}
 		return $time;
 	}
@@ -311,7 +311,7 @@ class File extends \eskymo\Object
 	 * or null if this pathname does not name a parent directory.
 	 *
 	 * @return File
-	 * @throws \IOException if the file has no parent file
+	 * @throws \Nette\IOException if the file has no parent file
 	 */
 	public function getParentFile() {
 		if (empty($this->parent)) {
@@ -321,7 +321,7 @@ class File extends \eskymo\Object
 				$this->parent = new File($dirname);
 			}
 			else {
-				throw new \IOException("The file '".$this->getPath()."' has no parent file.", self::ERROR_GENERAL);
+				throw new \Nette\IOException("The file '".$this->getPath()."' has no parent file.", self::ERROR_GENERAL);
 			}
 		}
 		return $this->parent;
@@ -340,17 +340,17 @@ class File extends \eskymo\Object
 	 * It returns file size id bytes.
 	 *
 	 * @return int
-	 * @throws \FileNotFoundException if the file does not exist.
-	 * @throws \IOException if there is an I/O problem
+	 * @throws \Nette\FileNotFoundException if the file does not exist.
+	 * @throws \Nette\IOException if there is an I/O problem
 	 */
 	public function getSize() {
 		if (!$this->exists()) {
-			throw new \FileNotFoundException($this->path);
+			throw new \Nette\FileNotFoundException($this->path);
 		}
 		Tools::tryError();
 		$size = filesize($this->path);
 		if (Tools::catchError($msg)) {
-			throw new \IOException($msg, self::ERROR_GENERAL);
+			throw new \Nette\IOException($msg, self::ERROR_GENERAL);
 		}
 		return $size;
 	}
@@ -358,18 +358,18 @@ class File extends \eskymo\Object
 	 * It returns file type.
 	 *
 	 * @return FileType
-	 * @throws \FileNotFoundException if the file does not exist.
-	 * @throws \IOException if there is a problem to get a file type
+	 * @throws \Nette\FileNotFoundException if the file does not exist.
+	 * @throws \Nette\IOException if there is a problem to get a file type
 	 */
 	public function getType() {
 		if (empty($this->type)) {
 			if (!$this->exists()) {
-				throw new \FileNotFoundException($this->path);
+				throw new \Nette\FileNotFoundException($this->path);
 			}
 			if (class_exists("finfo")) {
 				$finfo = new finfo(FILEINFO_MIME,$this->getPath());
 				if (!$fi) {
-					throw new \IOException("There is a problem to detect type of file '".$this->getPath()."'.", self::ERROR_FILE_INFO);
+					throw new \Nette\IOException("There is a problem to detect type of file '".$this->getPath()."'.", self::ERROR_FILE_INFO);
 				}
 				$mimeType = $info->file($this->getPath());
 				$finfo->close();
@@ -378,7 +378,7 @@ class File extends \eskymo\Object
 				$mimeType = mime_content_type($this->getPath());
 			}
 			else {
-				throw new \IOException("There is a problem to get content type of the file. Class 'finfo' and function 'mime_content_type' are not avaiable.");
+				throw new \Nette\IOException("There is a problem to get content type of the file. Class 'finfo' and function 'mime_content_type' are not avaiable.");
 			}
 			$this->type = new FileType($mimeType);
 		}
@@ -389,11 +389,11 @@ class File extends \eskymo\Object
 	 * It checks if the file is directory.
 	 *
 	 * @return boolean
-	 * @throws \FileNotFoundException if the file does not exist.
+	 * @throws \Nette\FileNotFoundException if the file does not exist.
 	 */
 	public function isDirectory() {
 		if (!$this->exists()) {
-			throw new \FileNotFoundException($this->path);
+			throw new \Nette\FileNotFoundException($this->path);
 		}
 		return is_dir($this->getPath());
 	}
@@ -402,11 +402,11 @@ class File extends \eskymo\Object
 	 * It checks if the file is file (not directory).
 	 *
 	 * @return boolean
-	 * @throws \FileNotFoundException if the file does not exist.
+	 * @throws \Nette\FileNotFoundException if the file does not exist.
 	 */
 	public function isFile() {
 		if (!$this->exists()) {
-			throw new \FileNotFoundException($this->path);
+			throw new \Nette\FileNotFoundException($this->path);
 		}
 		return is_file($this->getPath());
 	}
@@ -420,12 +420,12 @@ class File extends \eskymo\Object
 	 *
 	 * @param IFileFilter $filter The file filter.
 	 * @return array|File
-	 * @throws \FileNotFoundException if the file does not exist.
-	 * @throws NotSupportedException if this file is not a directory.
+	 * @throws \Nette\FileNotFoundException if the file does not exist.
+	 * @throws \Nette\NotSupportedException if this file is not a directory.
 	 */
 	public function listFiles(IFileFilter $filter = NULL) {
 		if (!$this->exists()) {
-			throw new \FileNotFoundException($this->path);
+			throw new \Nette\FileNotFoundException($this->path);
 		}
 		if (!empty($filter) && ($filter instanceof FileNameFilter)) {
 			$fileNameFilter = $filter;
@@ -452,12 +452,12 @@ class File extends \eskymo\Object
 	 *
 	 * @param FileNameFilter $filter The file name filter.
 	 * @return array|string
-	 * @throws \FileNotFoundException if the file does not exist.
-	 * @throws NotSupportedException if this file is not a directory.
+	 * @throws \Nette\FileNotFoundException if the file does not exist.
+	 * @throws \Nette\NotSupportedException if this file is not a directory.
 	 */
 	public function listPaths(FileNameFilter $filter = NULL) {
 		if (!$this->isDirectory()) {
-			throw new NotSupportedException();
+			throw new \Nette\NotSupportedException();
 		}
 		if (!empty ($filter)) {
 			$rule = $filter->getRule();
@@ -468,7 +468,7 @@ class File extends \eskymo\Object
 		Tools::tryError();
 		$list = glob($this->getPath() . DIRECTORY_SEPARATOR . $rule);
 		if (Tools::catchError($msg)) {
-			throw new \IOException($msg, self::ERROR_GENERAL);
+			throw new \Nette\IOException($msg, self::ERROR_GENERAL);
 		}
                 if (empty($list)) {
                     return array();
@@ -483,24 +483,24 @@ class File extends \eskymo\Object
 	 *
 	 * @param string $access Access rights
 	 * @return boolean It returns TRUE, if the directory was created, otherwise FALSE.
-	 * @throws \NullPointerException if the $access is empty
-	 * @throws \IOException if there is a problem to create directory.
+	 * @throws \Nette\NullPointerException if the $access is empty
+	 * @throws \Nette\IOException if there is a problem to create directory.
 	 */
 	public function mkdir($access = "0777") {
 		if (empty($access)) {
-			throw new \NullPointerException("access");
+			throw new \Nette\NullPointerException("access");
 		}
 		if ($this->exists()) {
 			return FALSE;
 		}
 		if ($this->getParentFile() != NULL && !$this->getParentFile()->canWrite()) {
-			throw new \IOException("The directory can not be created.", self::ERROR_SECURITY);
+			throw new \Nette\IOException("The directory can not be created.", self::ERROR_SECURITY);
 		}
 		Tools::tryError();
 		// FIXME: The access is problem
 		$check = mkdir($this->getPath()/*, $access*/);
 		if (Tools::catchError($msg)) {
-			throw new \IOException($msg, self::ERROR_GENERAL);
+			throw new \Nette\IOException($msg, self::ERROR_GENERAL);
 		}
 		return $check;
 	}
@@ -515,18 +515,18 @@ class File extends \eskymo\Object
 	 */
 	public function mkdirs($access = "0777") {
 		if (empty($access)) {
-			throw new \NullPointerException("access");
+			throw new \Nette\InvalidArgumentException("access");
 		}
 		if ($this->exists()) {
 			return FALSE;
 		}
 		if ($this->parent != NULL && !$this->parent->canWrite()) {
-			throw new \IOException("The directory can not be created.", self::ERROR_SECURITY);
+			throw new \Nette\IOException("The directory can not be created.", self::ERROR_SECURITY);
 		}
 		Tools::tryError();
 		$check = mkdir($this->getPath(), $access, TRUE);
 		if (Tools::catchError($msg)) {
-			throw new \IOException($msg, self::ERROR_GENERAL);
+			throw new \Nette\IOException($msg, self::ERROR_GENERAL);
 		}
 		return $check;
 	}

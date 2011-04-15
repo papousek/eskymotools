@@ -40,7 +40,7 @@ class Updater extends AWorker implements IUpdater
 
 	public function update(IEntity &$entity) {
 		if ($entity->getState() !== IEntity::STATE_MODIFIED) {
-			throw new InvalidArgumentException("The entity can not be inserted because it is not in state [".IEntity::STATE_MODIFIED."].");
+			throw new \InvalidArgumentException("The entity can not be inserted because it is not in state [".IEntity::STATE_MODIFIED."].");
 		}
 		// get data to update the entity
 		$data	= $entity->getData(IEntity::DATA_MODIFIED);
@@ -53,7 +53,7 @@ class Updater extends AWorker implements IUpdater
 		// check required columns
 		foreach($this->getRequiredColumns() AS $column) {
 			if (key_exists($column->getName()) && empty($update[$column->getName()])) {
-				throw new \NullPointerException("The value for column [".$column->getName()."] is empty.");
+				throw new \InvalidArgumentException("The value for column [".$column->getName()."] is empty.");
 			}
 		}
 		// execute update

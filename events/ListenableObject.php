@@ -28,7 +28,7 @@ abstract class ListenableObject extends Object implements IListenable
 	 */
 	protected final function addListener($type, IListener &$listener) {
 		if (empty($type)) {
-			throw new NullPointerException("type");
+			throw new \InvalidArgumentException("type");
 		}
 		if (!isset($this->listeners[$type])) {
 			$this->listeners[$type] = array();
@@ -41,7 +41,7 @@ abstract class ListenableObject extends Object implements IListenable
 	 */
 	protected final function callListeners($type, IEvent &$event) {
 		if (empty($type)) {
-			throw new NullPointerException("type");
+			throw new \InvalidArgumentException("type");
 		}
 		if (empty($this->listeners[$type])) {
 			return;

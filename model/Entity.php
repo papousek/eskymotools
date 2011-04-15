@@ -38,7 +38,7 @@ abstract class Entity extends AEntity
 			return $data[$name];
 		}
 		else {
-			throw new \MemberAccessException("The attribute [$original] is not available to read in the class [" . get_class($this) . "].");
+			throw new \Nette\MemberAccessException("The attribute [$original] is not available to read in the class [" . get_class($this) . "].");
 		}
 	}
 
@@ -49,7 +49,7 @@ abstract class Entity extends AEntity
 			$this->setData($name, $value);
 		}
 		else {
-			throw new \MemberAccessException("The attribute [$original] is not available to write in the class [" . get_class($this) . "].");
+			throw new \Nette\MemberAccessException("The attribute [$original] is not available to write in the class [" . get_class($this) . "].");
 		}
 	}
 

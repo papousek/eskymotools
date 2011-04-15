@@ -20,7 +20,7 @@ class Deleter extends AWorker implements IDeleter
 
 	function delete(\eskymo\model\IEntity &$entity) {
 		if ($entity->getState() !== IEntity::STATE_PERSISTED) {
-			throw new \InvalidStateException("The given entity is in the state [".$entity->getState()."] instead of the expected state [".IEntity::STATE_PERSISTED."]");
+			throw new \Nette\InvalidStateException("The given entity is in the state [".$entity->getState()."] instead of the expected state [".IEntity::STATE_PERSISTED."]");
 		}
 		$this->getConnection()
 				->delete($this->getTableName())

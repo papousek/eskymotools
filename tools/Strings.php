@@ -47,7 +47,7 @@ class Strings
 	 */
 	public static function isDateTime($datetime) {
 		if (empty($datetime)) {
-			throw new \eskymo\NullPointerException("datetime");
+			throw new \InvalidArgumentException("datetime");
 		}
 		return ereg("^[0-9]{4}-[0-9]{1,2}-[0-9]{1,2} [0-9]{1,2}:[0-9]{1,2}:[0-9]{1,2}$",$datetime);
 	}
@@ -81,15 +81,13 @@ class Strings
 	 *
 	 * @param int $length
 	 * @return string
-	 * @throws NullPointerException if the $lenght is empty.
-	 * @throws InvalidArgumentException if the length is not positive number.
 	 */
 	public static function random($length) {
 		if (empty ($length))  {
-			throw new NullPointerException("length");
+			throw new \InvalidArgumentException("length");
 		}
 		if ($length <= 0) {
-			throw new InvalidArgumentException("length");
+			throw new \InvalidArgumentException("length");
 		}
 		$chars = array_merge(range("a","z"), range("A","Z"), range(0,9));
 		$result = "";

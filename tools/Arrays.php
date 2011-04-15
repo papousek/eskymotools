@@ -22,7 +22,7 @@ class Arrays
 
 	public static function get(array $array, $key) {
 		if (empty($key)) {
-			throw new NullPointerException("key");
+			throw new \InvalidArgumentException("key");
 		}
 		return isset($array[$key]) ? $array[$key] : NULL;
 	}
@@ -59,7 +59,6 @@ class Arrays
 	 * @param array $array The array where the value is located
 	 * @param mixed $value The value which key is wanted
 	 * @return mixed The key
-	 * @throws DataNotFoundException if the value is not in the array
 	 */
 	public static function keyOf(array $array, $value) {
 		foreach ($array AS $key => $item) {
@@ -67,7 +66,7 @@ class Arrays
 				return $key;
 			}
 		}
-		throw new DataNotFoundException("The value '$value' does not exist.");
+		throw new \InvalidArgumentException("The value '$value' does not exist.");
 	}
 
 	/**

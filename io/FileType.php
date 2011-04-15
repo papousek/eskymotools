@@ -154,16 +154,16 @@ class FileType extends Object
 	 * It creates a new instance of filetype.
 	 * 
 	 * @param string $mimeType Mime type.
-	 * @throws NullPointerException if the $mimeTye is empty.
-	 * @throws NotSupportedException if the Mime type is not supported.
+	 * @throws \InvalidArgumentException if the $mimeTye is empty.
+	 * @throws \Nette\NotSupportedException if the Mime type is not supported.
 	 */
 	public function  __construct($mimeType) {
 		if (empty($mimeType)) {
-			throw new NullPointerException("mimeType");
+			throw new \InvalidArgumentException("mimeType");
 		}
 		$mimeType = String::lower($mimeType);
 		if (empty(self::$supported[$mimeType])) {
-			throw new NotSupportedException("This mime type is not supported: $mimeType.");
+			throw new \Nette\NotSupportedException("This mime type is not supported: $mimeType.");
 		}
 		$this->mimeType = $mimeType;
 	}

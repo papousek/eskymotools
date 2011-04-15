@@ -105,7 +105,7 @@ abstract class AWorker
 			$primaries = $this->getTableInfo()
 				->getPrimaryKey();
 			if (empty($primaries)) {
-				throw new NotSupportedException();
+				throw new \Nette\NotSupportedException();
 			}
 			$this->identificator = \eskymo\tools\Arrays::firstValue($primaries->getColumns());
 		}

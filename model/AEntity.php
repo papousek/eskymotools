@@ -44,7 +44,7 @@ abstract class AEntity extends \eskymo\Object implements IEntity
 
 	public final function delete() {
 		if ($this->getId() === null) {
-			throw new \InvalidStateException("The entity is not ready to be deleted.");
+			throw new \Nette\InvalidStateException("The entity is not ready to be deleted.");
 		}
 		$this->getDeleter()->delete($this);
 		$this->setState(IEntity::STATE_DELETED);
@@ -70,7 +70,7 @@ abstract class AEntity extends \eskymo\Object implements IEntity
 				return $data;
 				break;
 			default:
-				throw new \NotSupportedException("The given modifier [" . $modifier . "] is not supported.");
+				throw new \Nette\NotSupportedException("The given modifier [" . $modifier . "] is not supported.");
 		}
 		
 	}
@@ -88,7 +88,7 @@ abstract class AEntity extends \eskymo\Object implements IEntity
 
 	public final function loadDataFromArray(array $source) {
 		if ($this->getState() != IEntity::STATE_NEW) {
-			throw new \InvalidStateException("The entity is not in state [NEW]. It can't be loaded from array.");
+			throw new \Nette\InvalidStateException("The entity is not in state [NEW]. It can't be loaded from array.");
 		}
 		foreach($source AS $name => $value) {
 			if ($this->isValidToWrite($name)) {
@@ -114,7 +114,7 @@ abstract class AEntity extends \eskymo\Object implements IEntity
 			case IEntity::STATE_PERSISTED:
 				break;
 			default:
-				throw new \InvalidStateException("The entity can not be persisted.");
+				throw new \Nette\InvalidStateException("The entity can not be persisted.");
 		}
 		$this->setState(IEntity::STATE_PERSISTED);
 		$this->clearModifiedColumns();
@@ -172,7 +172,7 @@ abstract class AEntity extends \eskymo\Object implements IEntity
 
 	protected final function setState($state) {
 		if (empty($state)) {
-			throw new \NullPointerException("state");
+			throw new \InvalidArgumentException("state");
 		}
 		$this->state = $state;
 	}

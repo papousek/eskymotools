@@ -32,11 +32,11 @@ class FileNameFilter extends \eskymo\Object implements IFileFilter
 	 * It creates a new file name filter.
 	 *
 	 * @param string $rule The regular expression describing the file name.
-	 * @throws NullPointerException if the $rule is empty.
+	 * @throws \InvalidArgumentException if the $rule is empty.
 	 */
 	public function  __construct($rule) {
 		if (empty($rule)) {
-			throw new NullPointerException("rule");
+			throw new \InvalidArgumentException("rule");
 		}
 		$this->rule = $rule;
 	}
@@ -55,11 +55,11 @@ class FileNameFilter extends \eskymo\Object implements IFileFilter
 	 *
 	 * @param File $file
 	 * @return boolean
-	 * @throws NullPointerException if the $file is empty.
+	 * @throws \InvalidArgumentException if the $file is empty.
 	 */
 	public function accepts(File $file) {
 		if (empty($file)) {
-			throw new NullPointerException("file");
+			throw new \InvalidArgumentException("file");
 		}
 		return (eregi($this->getRule(), $file->getName()));
 	}

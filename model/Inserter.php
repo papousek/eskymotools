@@ -20,7 +20,7 @@ class Inserter extends AWorker implements IInserter
 
 	public function insert(IEntity &$entity) {
 		if ($entity->getState() !== IEntity::STATE_NEW) {
-			throw new InvalidArgumentException("The entity can not be inserted because it is not in state [".IEntity::STATE_NEW."].");
+			throw new \InvalidArgumentException("The entity can not be inserted because it is not in state [".IEntity::STATE_NEW."].");
 		}
 		// get data to insert the entity
 		$data	= $entity->getData(IEntity::DATA_MODIFIED);
@@ -37,7 +37,7 @@ class Inserter extends AWorker implements IInserter
 		// check required columns
 		foreach($this->getRequiredColumns() AS $column) {
 			if (empty($insert[$column->getName()])) {
-				throw new \NullPointerException("The value for column [".$column->getName()."] is empty.");
+				throw new \InvalidArgumentException("The value for column [".$column->getName()."] is empty.");
 			}
 		}
 		// execute insertion
