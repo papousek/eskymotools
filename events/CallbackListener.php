@@ -26,7 +26,7 @@ class CallbackListener implements IListener
 	 */
 	public function  __construct(array $callback) {
 		if (!is_callable($callback)) {
-			throw new InvalidArgumentException("The callback is not callable!");
+			throw new \InvalidArgumentException("The callback is not callable!");
 		}
 		$this->callback = $callback;
 	}

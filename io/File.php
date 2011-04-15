@@ -166,10 +166,10 @@ class File extends \eskymo\Object
 	 */
 	public function copy($destination) {
 		if (empty($destination)) {
-			throw new \Nette\InvalidArgumentException("destination");
+			throw new \InvalidArgumentException("destination");
 		}
 		if (!$this->exists()) {
-			throw new \FileNotFoundException($this->path);
+			throw new \Nette\FileNotFoundException($this->path);
 		}
 		$destFile = new File($destination);
 		if (!$destFile->getParentFile()->canWrite()) {
