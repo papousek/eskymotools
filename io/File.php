@@ -113,9 +113,9 @@ class File extends \eskymo\Object
 		if (!$this->exists()) {
 			throw new \Nette\FileNotFoundException($this->getPath());
 		}
-		Tools::tryError();
+		\Nette\Diagnostics\Debugger::tryError();
 		$check = is_executable($this->getPath());
-		if  (Tools::catchError($msg)) {
+		if  (\Nette\Diagnostics\Debugger::catchError($msg)) {
 			throw new \Nette\IOException($msg, self::ERROR_GENERAL);
 		}
 		return $check;
@@ -131,9 +131,9 @@ class File extends \eskymo\Object
 		if (!$this->exists()) {
 			throw new \Nette\FileNotFoundException($this->getPath());
 		}
-		Tools::tryError();
+		\Nette\Diagnostics\Debugger::tryError();
 		$check = is_readable($this->getPath());
-		if  (Tools::catchError($msg)) {
+		if  (\Nette\Diagnostics\Debugger::catchError($msg)) {
 			throw new \Nette\IOException($msg, self::ERROR_GENERAL);
 		}
 		return $check;
@@ -149,9 +149,9 @@ class File extends \eskymo\Object
 		if (!$this->exists()) {
 			throw new \Nette\FileNotFoundException($this->getPath());
 		}
-		Tools::tryError();
+		\Nette\Diagnostics\Debugger::tryError();
 		$check = is_writable($this->getPath());
-		if  (Tools::catchError($msg)) {
+		if  (\Nette\Diagnostics\Debugger::catchError($msg)) {
 			throw new \Nette\IOException($msg, self::ERROR_GENERAL);
 		}
 		return $check;
@@ -175,9 +175,9 @@ class File extends \eskymo\Object
 		if (!$destFile->getParentFile()->canWrite()) {
 			throw new \Nette\IOException("The file cannot be copied.", self::ERROR_SECURITY);
 		}
-		Tools::tryError();
+		\Nette\Diagnostics\Debugger::tryError();
 		$check = copy($this->getAbsolutePath(), $destination);
-		if  (Tools::catchError($msg)) {
+		if  (\Nette\Diagnostics\Debugger::catchError($msg)) {
 			throw new \Nette\IOException($msg, self::ERROR_GENERAL);
 		}
 		return $destFile;
@@ -199,15 +199,15 @@ class File extends \eskymo\Object
 			throw new \Nette\IOException("The file can not be created.", self::ERROR_SECURITY);
 		}
 		// Create a new file
-		Tools::tryError();
+		\Nette\Diagnostics\Debugger::tryError();
 		$file = fopen($this->getPath(), "w+");
-		if  (Tools::catchError($msg)) {
+		if  (\Nette\Diagnostics\Debugger::catchError($msg)) {
 			throw new \Nette\IOException($msg, self::ERROR_OPEN);
 		}
 		// Close the file
-		Tools::tryError();
+		\Nette\Diagnostics\Debugger::tryError();
 		fclose($file);
-		if  (Tools::catchError($msg)) {
+		if  (\Nette\Diagnostics\Debugger::catchError($msg)) {
 			throw new \Nette\IOException($msg, self::ERROR_OPEN);
 		}
 	}
@@ -226,14 +226,14 @@ class File extends \eskymo\Object
 		if (!empty($parent) && !$parent->canWrite()) {
 			throw new \Nette\IOException("The file '".$this->getPath()."' cannot be deleted.", self::ERROR_SECURITY);
 		}
-		Tools::tryError();
+		\Nette\Diagnostics\Debugger::tryError();
 		if ($this->isDirectory()) {
 			rmdir($this->getPath());
 		}
 		else {
 			unlink($this->getPath());
 		}
-		if  (Tools::catchError($msg)) {
+		if  (\Nette\Diagnostics\Debugger::catchError($msg)) {
 			throw new \Nette\IOException($msg, self::ERROR_GENERAL);
 		}
 	}
@@ -283,12 +283,12 @@ class File extends \eskymo\Object
 		if (!$this->exists()) {
 			throw new \Nette\FileNotFoundException($this->getPath());
 		}
-		Tools::tryError();
+		\Nette\Diagnostics\Debugger::tryError();
 		$time = filectime($this->getPath());
 		if (empty($time)) {
 			throw new \Nette\IOException("There is a problem to get time when the file was last modified.", self::ERROR_GENERAL);
 		}
-		if  (Tools::catchError($msg)) {
+		if  (\Nette\Diagnostics\Debugger::catchError($msg)) {
 			throw new \Nette\IOException($msg, self::ERROR_GENERAL);
 		}
 		return $time;
@@ -347,9 +347,9 @@ class File extends \eskymo\Object
 		if (!$this->exists()) {
 			throw new \Nette\FileNotFoundException($this->path);
 		}
-		Tools::tryError();
+		\Nette\Diagnostics\Debugger::tryError();
 		$size = filesize($this->path);
-		if (Tools::catchError($msg)) {
+		if (\Nette\Diagnostics\Debugger::catchError($msg)) {
 			throw new \Nette\IOException($msg, self::ERROR_GENERAL);
 		}
 		return $size;
@@ -465,9 +465,9 @@ class File extends \eskymo\Object
 		else {
 			$rule = "*";
 		}
-		Tools::tryError();
+		\Nette\Diagnostics\Debugger::tryError();
 		$list = glob($this->getPath() . DIRECTORY_SEPARATOR . $rule);
-		if (Tools::catchError($msg)) {
+		if (\Nette\Diagnostics\Debugger::catchError($msg)) {
 			throw new \Nette\IOException($msg, self::ERROR_GENERAL);
 		}
                 if (empty($list)) {
@@ -496,10 +496,10 @@ class File extends \eskymo\Object
 		if ($this->getParentFile() != NULL && !$this->getParentFile()->canWrite()) {
 			throw new \Nette\IOException("The directory can not be created.", self::ERROR_SECURITY);
 		}
-		Tools::tryError();
+		\Nette\Diagnostics\Debugger::tryError();
 		// FIXME: The access is problem
 		$check = mkdir($this->getPath()/*, $access*/);
-		if (Tools::catchError($msg)) {
+		if (\Nette\Diagnostics\Debugger::catchError($msg)) {
 			throw new \Nette\IOException($msg, self::ERROR_GENERAL);
 		}
 		return $check;
@@ -523,9 +523,9 @@ class File extends \eskymo\Object
 		if ($this->parent != NULL && !$this->parent->canWrite()) {
 			throw new \Nette\IOException("The directory can not be created.", self::ERROR_SECURITY);
 		}
-		Tools::tryError();
+		\Nette\Diagnostics\Debugger::tryError();
 		$check = mkdir($this->getPath(), $access, TRUE);
-		if (Tools::catchError($msg)) {
+		if (\Nette\Diagnostics\Debugger::catchError($msg)) {
 			throw new \Nette\IOException($msg, self::ERROR_GENERAL);
 		}
 		return $check;
