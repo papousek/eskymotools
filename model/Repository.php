@@ -60,6 +60,17 @@ class Repository extends ARepository
 		}
 	}
 
+	/** @return \eskymo\model\IInserter */
+	protected function createInserter() {
+		$inserter = '\\' . $namespace . '\\' .$this->getName() . "Inserter";
+		if (class_exists($inserter)) {
+			return new $inserter($this->getConnection(), strtolower($this->getName()));
+		}
+		else {
+			return new Inserter($this->getConnection(), strtolower($this->getName()));
+		}
+	}
+
 	/** @return \eskymo\model\IDeleter */
 	protected function createUpdater() {
 		$updater = '\\' . $namespace . '\\' .$this->getName() . "Updater";
