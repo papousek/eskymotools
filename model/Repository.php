@@ -32,13 +32,14 @@ class Repository extends ARepository
 	 * @param string Namespace of the classes
 	 */	
 	public function __construct(\DibiConnection $connection, $name, $namespace = '') {
+		$this->connection	= $connection;
 		$this->name			= ucfirst($name);
 		$this->namespace	= trim($namespace, '\\');
 	}
 
 	/** @return \eskymo\model\IEntity */
 	public function createEmpty() {
-		$entity = '\\' . $namespace . '\\' .$this->getName() . "Entity";
+		$entity = '\\' . $this->namespace . '\\' .$this->getName() . "Entity";
 		return new $entity($this->getInserter(), $this->getUpdater(), $this->getDeleter());
 	}
 
@@ -51,7 +52,7 @@ class Repository extends ARepository
 
 	/** @return \eskymo\model\IDeleter */
 	protected function createDeleter() {
-		$deleter = '\\' . $namespace . '\\' .$this->getName() . "Deleter";
+		$deleter = '\\' . $this->namespace . '\\' .$this->getName() . "Deleter";
 		if (class_exists($deleter)) {
 			return new $deleter($this->getConnection(), strtolower($this->getName()));
 		}
@@ -62,7 +63,7 @@ class Repository extends ARepository
 
 	/** @return \eskymo\model\IInserter */
 	protected function createInserter() {
-		$inserter = '\\' . $namespace . '\\' .$this->getName() . "Inserter";
+		$inserter = '\\' . $this->namespace . '\\' .$this->getName() . "Inserter";
 		if (class_exists($inserter)) {
 			return new $inserter($this->getConnection(), strtolower($this->getName()));
 		}
@@ -73,7 +74,7 @@ class Repository extends ARepository
 
 	/** @return \eskymo\model\IDeleter */
 	protected function createUpdater() {
-		$updater = '\\' . $namespace . '\\' .$this->getName() . "Updater";
+		$updater = '\\' . $this->namespace . '\\' .$this->getName() . "Updater";
 		if (class_exists($updater)) {
 			return new $updater($this->getConnection(), strtolower($this->getName()));
 		}

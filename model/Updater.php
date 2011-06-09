@@ -18,26 +18,6 @@ namespace eskymo\model;
 class Updater extends AWorker implements IUpdater
 {
 
-	/**
-	 * Table which the updater works with
-	 *
-	 * @var string
-	 */
-	private $table;
-
-	/** @var \DibiConnection */
-	private $connection;
-
-	/**
-	 * It creates a new instance
-	 *
-	 * @param
-	 * @param string $table
-	 */
-	public function  __construct(\DibiConnection $connection, $table) {
-		$this->table = $table;
-	}
-
 	public function update(IEntity &$entity) {
 		if ($entity->getState() !== IEntity::STATE_MODIFIED) {
 			throw new \InvalidArgumentException("The entity can not be inserted because it is not in state [".IEntity::STATE_MODIFIED."].");
@@ -62,17 +42,6 @@ class Updater extends AWorker implements IUpdater
 				->where($this->getIdColumn() . ' = ' . $this->getType($this->getIdColumn()), $entity->getId())
 				->execute(TRUE);
 		return $modified !== 0;
-	}
-
-	// ----- PROTECTED METHODS
-
-	protected function getTableName() {
-		return $this->table;
-	}
-
-	/** @return \DibiConnection */
-	protected function getConnection() {
-		return $this->connection;
 	}
 
 }
