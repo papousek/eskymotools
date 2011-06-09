@@ -73,6 +73,7 @@ abstract class Entity extends AEntity
 	}
 
 	protected function isValidToWrite($attribute) {
+		$this->init();
 		return isset(self::$writeAtrributes[get_class($this)][$attribute]);
 	}
 

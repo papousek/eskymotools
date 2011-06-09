@@ -139,7 +139,7 @@ abstract class AWorker
 	 */
 	protected final function getTableInfo() {
 		if (empty($this->tableInfo)) {
-			$this->tableInfo = $this->getConnection()->getDatabaseInfo()->getTable($this->tableName());
+			$this->tableInfo = $this->getConnection()->getDatabaseInfo()->getTable($this->getTableName());
 		}
 		return $this->tableInfo;
 	}
