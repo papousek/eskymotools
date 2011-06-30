@@ -31,7 +31,7 @@ class Inserter extends AWorker implements IInserter
 			}
 		}
 		// set inserted column
-		if (key_exists($this->getAvailableColumns(), "inserted") && !key_exists($data, "inserted")) {
+		if (array_key_exists("inserted", $this->getAvailableColumns()) && !array_key_exists("inserted", $data)) {
 			$insert["inserted"] = new \DateTime();
 		}
 		// check required columns

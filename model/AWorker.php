@@ -124,7 +124,7 @@ abstract class AWorker
 			$columns = $this->getAvailableColumns();
 			foreach ($columns AS $column) {
 				if (!$column->isNullable() && $column->getName() !== $this->getIdColumn()->getName() && strtolower($column->getNativeType()) !== 'timestamp') {
-					$this->required[] = $column->getName();
+					$this->required[$column->getName()] = $column;
 				}
 			}
 		}
