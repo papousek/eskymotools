@@ -1,4 +1,5 @@
 <?php
+namespace eskymo\presenters;
 /**
  * This source file is subject to the "New BSD License".
  *
@@ -9,27 +10,11 @@
  * @license		http://www.opensource.org/licenses/bsd-license.php
  * @link		http://eskymo.zimodej.cz
  */
-
-namespace eskymo\model;
-
-
-interface IRepository
+abstract class BasePresenter extends \Nette\Application\UI\Presenter
 {
 
-	/**
-	 * @return \eskymo\model\IEntity
-	 */
-	function createEmpty();
-
-	/**
-	 * @return \eskymo\model\IEntity
-	 */
-	function fetchAndCreate(\IDataSource $source);
-
-	/**
-	 *
-	 * @return array
-	 */
-	function fetchAndCreateAll(\IDataSource $source);
+	public function createComponentFlashMessages($name) {
+		return new \eskymo\components\FlashMessages($this, $name);
+	}
 
 }

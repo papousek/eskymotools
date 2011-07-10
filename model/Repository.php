@@ -43,6 +43,11 @@ class Repository extends ARepository
 		return new $entity($this->getInserter(), $this->getUpdater(), $this->getDeleter());
 	}
 
+	/** @return \DibiDataSource */
+	public function findAll() {
+		return $this->getConnection()->dataSource('SELECT * FROM ['.strtolower($this->getName()).']');
+	}
+
 	// ------ PROTECTED METHODS
 
 	/** @return \DibiConnection */

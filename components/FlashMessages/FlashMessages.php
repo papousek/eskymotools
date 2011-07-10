@@ -1,4 +1,6 @@
 <?php
+namespace eskymo\components;
+
 /**
  * This source file is subject to the "New BSD License".
  *
@@ -9,27 +11,4 @@
  * @license		http://www.opensource.org/licenses/bsd-license.php
  * @link		http://eskymo.zimodej.cz
  */
-
-namespace eskymo\model;
-
-
-interface IRepository
-{
-
-	/**
-	 * @return \eskymo\model\IEntity
-	 */
-	function createEmpty();
-
-	/**
-	 * @return \eskymo\model\IEntity
-	 */
-	function fetchAndCreate(\IDataSource $source);
-
-	/**
-	 *
-	 * @return array
-	 */
-	function fetchAndCreateAll(\IDataSource $source);
-
-}
+class FlashMessages extends VisualComponent {}

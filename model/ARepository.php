@@ -27,13 +27,13 @@ abstract class ARepository implements IRepository
 	/** @var \eskymo\model\IUpdater */
 	private $updater;
 
-	function fetchAndCreate(IDataSource $source) {
+	function fetchAndCreate(\IDataSource $source) {
 		$row = $source->fetch();
 		return empty($row) ? NULL : $this->createEmpty()->loadDataFromArray($row->toArray(), "Load");
 	}
 
 
-	function fetchAndCreateAll(IDataSource $source) {
+	function fetchAndCreateAll(\IDataSource $source) {
 		$result = array();
 		while($entity = $this->fetchAndCreate($source)){
 			$result[] = $entity;
